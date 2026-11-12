@@ -169,6 +169,9 @@ def draw(size):
     OUT.mkdir(parents=True,exist_ok=True)
     stem=OUT/f'topology_{size}bus'
     fig.savefig(stem.with_suffix('.svg'))
+    svg=stem.with_suffix('.svg')
+    svg.write_text('\n'.join(line.rstrip() for line in svg.read_text(encoding='utf-8').splitlines())+'\n',
+                   encoding='utf-8',newline='\n')
     fig.savefig(stem.with_suffix('.png'),dpi=600)
     plt.close(fig)
     png=Image.open(stem.with_suffix('.png'))
@@ -182,5 +185,5 @@ def draw(size):
 
 if __name__=='__main__':
     audit=[draw(10),draw(54)]
-    (OUT/'topology_audit.json').write_text(json.dumps(audit,indent=2),encoding='utf-8')
+    (OUT/'topology_audit.json').write_text(json.dumps(audit,indent=2)+'\n',encoding='utf-8',newline='\n')
     print(json.dumps(audit,indent=2))
